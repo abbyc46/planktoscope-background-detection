@@ -1,0 +1,27 @@
+# PlanktoScope Background Artifact Detection
+
+Small-scale proof-of-concept for identifying persistent background objects in automated plankton microscopy images.
+
+## Problem
+PlanktoScope systems generate thousands of microscopy images, but some contain fixed artifacts (debris, optical imperfections) that appear in the same position across multiple frames. These need to be identified and filtered out to avoid false positives in plankton detection.
+
+## Approach
+Compares neighboring images pixel-by-pixel to identify regions that remain dark across frames. Persistent dark pixels likely indicate background artifacts rather than transient organisms.
+
+**Logic:**
+- If pixel values differ significantly between frames → likely a flowing organism → use brighter value
+- If pixel values are similar → likely background artifact → average the values
+- Track percentage of pixels flagged as artifacts
+- If >3% of pixels are artifacts → trigger cleaning alert
+
+## Code
+See `background_detection.py` for implementation.
+
+**Note:** Original test images not included (institutional data). Code demonstrates the methodology used in collaboration with PhD student on the Ten-Earth plankton monitoring project.
+
+## Tools
+- Python, OpenCV, NumPy, Matplotlib
+- Developed in Google Colab for rapid prototyping
+
+## Context
+This proof-of-concept was tested on small image batches to validate the frequency-based filtering approach before scaling to process 400,000+ images from the full Ten-Earth dataset.
